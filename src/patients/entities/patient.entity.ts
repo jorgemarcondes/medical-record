@@ -26,7 +26,7 @@ export class Patient {
   email?: string;
 
   @Column({ type: 'date', nullable: true })
-  birthdate?: Date;
+  birthdate?: string;
 
   @Column({ type: 'enum', enum: Sex, nullable: true })
   sex?: Sex;

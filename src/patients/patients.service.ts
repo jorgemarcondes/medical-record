@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePatientDto } from './dto/create-patient.dto';
 import { UpdatePatientDto } from './dto/update-patient.dto';
 import { PatientsRepository } from './patients.repository';
@@ -21,8 +21,14 @@ export class PatientsService {
     return this.patientsRepository.find();
   }
 
-  findOne(id: string) {
-    return this.patientsRepository.findOne(id);
+  async findOne(id: string): Promise<Patient> | never {
+    const patient = await this.patientsRepository.findOne(id);
+
+    if (!patient) {
+      throw new NotFoundException(`Patient with ID: '${id}' not found`);
+    }
+
+    return patient;
   }
 
   update(
@@ -32,7 +38,12 @@ export class PatientsService {
     return this.patientsRepository.update(id, updatePatientDto);
   }
 
-  remove(id: string) {
-    return this.patientsRepository.softDelete(id);
+  async remove(id: string): Promise<UpdateResult> | never {
+    const result: UpdateResult = await this.patientsRepository.softDelete(id);
+    if (!result.affected) {
+      throw new NotFoundException(`Patient with ID: '${id}' not found`);
+    }
+
+    return result;
   }
 }

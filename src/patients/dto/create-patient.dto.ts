@@ -1,14 +1,15 @@
 import {
-  IsDate,
+  IsDateString,
   IsEmail,
   IsEnum,
   IsNotEmpty,
-  IsNumberString,
+  IsNumber,
   IsOptional,
   IsPhoneNumber,
 } from 'class-validator';
 import { Sex } from '../entities/patient.entity';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 
 export class CreatePatientDto {
   @ApiProperty()
@@ -27,20 +28,23 @@ export class CreatePatientDto {
 
   @IsOptional()
   @ApiPropertyOptional()
-  @IsDate()
+  @IsDateString()
   birthdate: string;
 
+  @IsOptional()
   @IsEnum(Sex)
   @ApiPropertyOptional()
   sex: Sex;
 
   @IsOptional()
   @ApiPropertyOptional()
-  @IsNumberString()
+  @IsNumber()
+  @Type(() => Number)
   height: number;
 
   @IsOptional()
-  @IsNumberString()
   @ApiPropertyOptional()
+  @IsNumber()
+  @Type(() => Number)
   weight: number;
 }

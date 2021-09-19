@@ -1,11 +1,11 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
 import { PatientsService } from './patients.service';
 import { CreatePatientDto } from './dto/create-patient.dto';
@@ -37,8 +37,6 @@ export class PatientsController {
     @Param('id') id: string,
     @Body() updatePatientDto: UpdatePatientDto,
   ): Promise<UpdateResult> {
-    console.log(updatePatientDto.height);
-    console.log(typeof updatePatientDto.height);
     return this.patientsService.update(id, updatePatientDto);
   }
 
