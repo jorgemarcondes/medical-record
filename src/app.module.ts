@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { PatientsModule } from './patients/patients.module';
 
 @Module({
   imports: [
@@ -9,10 +10,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       port: parseInt(process.env.DB_PORT) || 5432,
       username: process.env.DB_USERNAME || 'postgres',
       password: process.env.DB_PASSWORD || 'postgres',
-      database: 'medical-record-db',
+      database: 'medical_record_db',
       autoLoadEntities: true,
       synchronize: true,
     }),
+    PatientsModule,
   ],
 })
 export class AppModule {}
