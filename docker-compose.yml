@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:alpine
+    environment:
+      POSTGRES_DB: medical_record_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - app-volume:/var/lib/postgresql/data
+
+  db_test:
+    image: postgres:alpine
+    environment:
+      POSTGRES_DB: e2e_medical_record_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5433:5432'
+
+volumes:
+  app-volume:

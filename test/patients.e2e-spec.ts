@@ -15,13 +15,13 @@ describe('PatientsController (e2e)', () => {
         PatientsModule,
         TypeOrmModule.forRoot({
           type: 'postgres',
-          host: process.env.DB_HOST || 'localhost',
-          port: parseInt(process.env.DB_PORT) || 5432,
-          username: process.env.DB_USERNAME || 'postgres',
-          password: process.env.DB_PASSWORD || 'postgres',
-          database: 'e2e_medical_record',
+          host: process.env.E2E_DB_HOST || 'localhost',
+          port: parseInt(process.env.E2E_DB_PORT) || 5433,
+          username: process.env.E2E_DB_USERNAME || 'postgres',
+          password: process.env.E2E_DB_PASSWORD || 'postgres',
+          database: 'e2e_medical_record_db',
           autoLoadEntities: true,
-          synchronize: false,
+          synchronize: true,
         }),
         TypeOrmModule.forFeature([PatientsRepository]),
       ],
@@ -216,11 +216,6 @@ describe('PatientsController (e2e)', () => {
 
       expect(responseDelete.status).toBe(200);
       expect(responseDelete.body.affected).toBe(1);
-
-      // expect(response.body.message).toBe(
-      //   "Patient with ID: '875208f6-b82b-4045-b7c6-41a408e837d5' not found",
-      // );
-      // expect(responseGet.body.affected).toBe(1);
     });
 
     it('Deletes a patient that not exists, should return 404 with a message', async () => {
