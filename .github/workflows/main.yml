@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build docker-compose for tests
-        run: docker-compose -f docker-compose.e2e.yml up -d
+        run: docker-compose up -d db_test
       - name: Check running containers
         run: docker ps -a
       - name: Install dependencies

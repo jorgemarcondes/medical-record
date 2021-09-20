@@ -11,6 +11,9 @@ $ yarn install
 ## Running the app
 
 ```bash
+# run docker compose
+$ docker-compose up -d db
+
 # development
 $ yarn start
 
@@ -26,7 +29,10 @@ $ yarn start:prod
 
 ```bash
 # run docker compose
-$ docker-compose up -d
+$ docker-compose up -d db_test
 # e2e tests
 $ yarn test:e2e
 ```
+
+## Documentation
+A documentação da API está na rota /api . A documentação foi criada usando o swagger.
