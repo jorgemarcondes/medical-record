@@ -4,6 +4,7 @@ import * as request from 'supertest';
 import { PatientsModule } from '../src/patients/patients.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PatientsRepository } from '../src/patients/patients.repository';
+import { SchedulesRepository } from '../src/schedules/schedules.repository';
 
 describe('PatientsController (e2e)', () => {
   let app: INestApplication;
@@ -23,7 +24,7 @@ describe('PatientsController (e2e)', () => {
           autoLoadEntities: true,
           synchronize: true,
         }),
-        TypeOrmModule.forFeature([PatientsRepository]),
+        TypeOrmModule.forFeature([PatientsRepository, SchedulesRepository]),
       ],
     }).compile();
 
@@ -34,8 +35,8 @@ describe('PatientsController (e2e)', () => {
     await app.init();
   });
 
-  afterEach(async () => {
-    await patientRepository.query(`DELETE FROM patients;`);
+  beforeEach(async () => {
+    await patientRepository.query(`TRUNCATE patients CASCADE;`);
   });
 
   afterAll(async () => {
@@ -78,9 +79,6 @@ describe('PatientsController (e2e)', () => {
 
   describe('POST', () => {
     it('create a patient', async () => {
-      const patients = await patientRepository.find();
-      expect(patients.length).toBe(0);
-
       const response = await request(app.getHttpServer())
         .post('/patients')
         .send({ name: 'Euclides' });
@@ -90,9 +88,6 @@ describe('PatientsController (e2e)', () => {
     });
 
     it('create a patient with invalid email returns 400', async () => {
-      const patients = await patientRepository.find();
-      expect(patients.length).toBe(0);
-
       const response = await request(app.getHttpServer())
         .post('/patients')
         .send({ name: 'Euclides', email: 'test' });
@@ -102,9 +97,6 @@ describe('PatientsController (e2e)', () => {
     });
 
     it('create a patient with invalid sex returns 400', async () => {
-      const patients = await patientRepository.find();
-      expect(patients.length).toBe(0);
-
       const response = await request(app.getHttpServer())
         .post('/patients')
         .send({ name: 'Euclides', sex: 'X' });
@@ -114,9 +106,6 @@ describe('PatientsController (e2e)', () => {
     });
 
     it('create a patient with height', async () => {
-      const patients = await patientRepository.find();
-      expect(patients.length).toBe(0);
-
       const response = await request(app.getHttpServer())
         .post('/patients')
         .send({ name: 'Euclides', height: 12 });
@@ -126,9 +115,6 @@ describe('PatientsController (e2e)', () => {
     });
 
     it('create a patient with invalid height returns 400', async () => {
-      const patients = await patientRepository.find();
-      expect(patients.length).toBe(0);
-
       const response = await request(app.getHttpServer())
         .post('/patients')
         .send({ name: 'Euclides', height: 'asdf' });
@@ -140,9 +126,6 @@ describe('PatientsController (e2e)', () => {
     });
 
     it('create a patient invalid weight returns 400', async () => {
-      const patients = await patientRepository.find();
-      expect(patients.length).toBe(0);
-
       const response = await request(app.getHttpServer())
         .post('/patients')
         .send({ name: 'Euclides', weight: 'fdasd' });

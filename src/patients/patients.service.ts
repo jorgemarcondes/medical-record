@@ -31,11 +31,20 @@ export class PatientsService {
     return patient;
   }
 
-  update(
+  async update(
     id: string,
     updatePatientDto: UpdatePatientDto,
   ): Promise<UpdateResult> {
-    return this.patientsRepository.update(id, updatePatientDto);
+    const result: UpdateResult = await this.patientsRepository.update(
+      id,
+      updatePatientDto,
+    );
+
+    if (!result.affected) {
+      throw new NotFoundException(`Patient with ID: '${id}' not found`);
+    }
+
+    return result;
   }
 
   async remove(id: string): Promise<UpdateResult> | never {

@@ -2,8 +2,10 @@ import {
   Column,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Schedule } from '../../schedules/entities/schedule.entity';
 
 export enum Sex {
   M = 'M',
@@ -36,6 +38,9 @@ export class Patient {
 
   @Column({ nullable: true })
   weight?: number;
+
+  @OneToMany(() => Schedule, (schedule) => schedule.patient, { nullable: true })
+  schedules?: Schedule[];
 
   @DeleteDateColumn()
   deletedAt?: Date;
